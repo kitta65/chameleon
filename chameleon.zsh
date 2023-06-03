@@ -1,5 +1,6 @@
 prompt_chameleon_setup () {
-  PROMPT='%F{#006688}> %f'
+  typeset -g prompt_chameleon_color='#006688'
+  PROMPT='%F{$prompt_chameleon_color}> %f'
 }
 
 prompt_chameleon_setup "$@"
