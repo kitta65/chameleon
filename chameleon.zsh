@@ -1,5 +1,5 @@
 prompt_chameleon_setup () {
-  PROMPT='%F{cyan}> %f'
+  PROMPT='%F{#006688}> %f'
 }
 
 prompt_chameleon_setup "$@"
