@@ -1,5 +1,5 @@
 prompt_chameleon_change_color() {
-  local red16=${prompt_chameleon_color:0:2}
+  local red16=${prompt_chameleon_color:1:2}
   local green16=${prompt_chameleon_color:3:2}
   local blue16=${prompt_chameleon_color:5:2}
   local red10=$(echo "obase=10; ibase=16; $red16" | bc)
@@ -12,10 +12,10 @@ prompt_chameleon_change_color() {
 
 prompt_chameleon_refresh() {
   prompt_chameleon_change_color
-  echo $prompt_chameleon_color
+  zle reset-prompt
 
   if $prompt_chameleon_async; then
-    async_job chameleon sleep 1
+    async_job chameleon sleep $prompt_chameleon_interval
   fi
 }
 
@@ -35,11 +35,11 @@ prompt_chameleon_setup() {
   fi
 
   if $prompt_chameleon_async; then
+    typeset -g prompt_chameleon_interval=0.1
     async_init
     async_start_worker chameleon
     async_register_callback chameleon prompt_chameleon_refresh
-    async_job chameleon sleep 1
-    echo initialized
+    async_job chameleon sleep $prompt_chameleon_interval
   else
     add-zsh-hook precmd prompt_chameleon_precmd
   fi
