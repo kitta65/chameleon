@@ -4,6 +4,9 @@ A simple command prompt for zsh, which gradually changes the color.
 
 ## Install
 
+> **Note**
+> It is optional but recommended to install [zsh-async](https://github.com/mafredri/zsh-async) before.
+
 Clone this repo somewhere you like (e.g. `$HOME/.zsh/chameleon`).
 
 ```sh
@@ -20,6 +23,7 @@ fpath+=("$HOME/.zsh/chameleon")
 ## Initialize
 
 ```sh
+# .zshrc
 autoload -U promptinit; promptinit
 prompt chameleon
 ```
