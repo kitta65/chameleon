@@ -62,7 +62,7 @@ prompt_chameleon_precmd() {
 
 prompt_chameleon_setup() {
   typeset -g prompt_chameleon_color='#FF0000'
-  PROMPT='%F{$prompt_chameleon_color}> %f'
+  PROMPT='%F{$prompt_chameleon_color}❯ %f'
 
   typeset -g prompt_chameleon_async=false
   if command -v async_init > /dev/null; then
