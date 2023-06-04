@@ -29,3 +29,7 @@ fpath+=("$HOME/.zsh/chameleon")
 autoload -U promptinit; promptinit
 prompt chameleon
 ```
+
+## Inspired by
+
+* [pure](https://github.com/sindresorhus/pure)
