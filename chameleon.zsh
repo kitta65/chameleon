@@ -83,6 +83,8 @@ prompt_chameleon_setup() {
   else
     add-zsh-hook precmd prompt_chameleon_precmd
   fi
+
+  prompt_opts=(percent subst)
 }
 
 prompt_chameleon_setup "$@"
