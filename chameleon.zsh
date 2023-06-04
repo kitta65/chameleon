@@ -55,8 +55,20 @@ prompt_chameleon_refresh() {
   zle reset-prompt
 
   if $prompt_chameleon_async; then
+    local code=$2
+    # when async worker crashes
+    if (( code == 2 )) || (( code == 3 )) || (( code == 130 )); then
+      async_stop_worker chameleon
+      prompt_chameleon_init
+    fi
     async_job chameleon sleep $prompt_chameleon_interval
   fi
+}
+
+prompt_chameleon_init() {
+  async_init
+  async_start_worker chameleon
+  async_register_callback chameleon prompt_chameleon_refresh
 }
 
 prompt_chameleon_precmd() {
@@ -76,9 +88,7 @@ prompt_chameleon_setup() {
 
   if $prompt_chameleon_async; then
     typeset -g prompt_chameleon_interval=0.1
-    async_init
-    async_start_worker chameleon
-    async_register_callback chameleon prompt_chameleon_refresh
+    prompt_chameleon_init
     async_job chameleon sleep $prompt_chameleon_interval
   else
     add-zsh-hook precmd prompt_chameleon_precmd
