@@ -2,6 +2,8 @@
 
 A simple command prompt for zsh, which gradually changes the color.
 
+[![asciicast](https://asciinema.org/a/oFwQslgRXYEIExsv1QBdEV0HK.svg)](https://asciinema.org/a/oFwQslgRXYEIExsv1QBdEV0HK)
+
 ## Install
 
 > **Note**
