@@ -1,53 +1,44 @@
 prompt_chameleon_gradation() {
   local temp=$prompt_chameleon_color
 
-  local -A rgb16
-  rgb16=(
-    r ${temp:1:2}
-    g ${temp:3:2}
-    b ${temp:5:2}
+  local -A rgb
+  rgb=(
+    r 0x${temp:1:2}
+    g 0x${temp:3:2}
+    b 0x${temp:5:2}
   )
 
-  local -A rgb10
-  rgb10=()
-  for key in ${(k)rgb16}; do
-    rgb10[$key]=$(echo "obase=10; ibase=16; $rgb16[$key]" | bc)
-  done
-
   local increment=30
-  if (( rgb10[r] == 255 )) && (( rgb10[g] < 255 )) && (( rgb10[b] == 0 )); then
+  if (( rgb[r] == 255 )) && (( rgb[g] < 255 )) && (( rgb[b] == 0 )); then
     # red -> yellow
-    rgb10[g]=$((rgb10[g] + increment))
-    rgb10[g]=$((rgb10[g] < 255 ? rgb10[g] : 255))
-  elif (( rgb10[r] > 0 )) && (( rgb10[g] == 255 )) && (( rgb10[b] == 0 )); then
+    rgb[g]=$((rgb[g] + increment))
+    rgb[g]=$((rgb[g] < 255 ? rgb[g] : 255))
+  elif (( rgb[r] > 0 )) && (( rgb[g] == 255 )) && (( rgb[b] == 0 )); then
     # yellow -> green
-    rgb10[r]=$((rgb10[r] - increment))
-    rgb10[r]=$((rgb10[r] < 0 ? 0 : rgb10[r]))
-  elif (( rgb10[r] == 0 )) && (( rgb10[g] == 255 )) && (( rgb10[b] < 255 )); then
+    rgb[r]=$((rgb[r] - increment))
+    rgb[r]=$((rgb[r] < 0 ? 0 : rgb[r]))
+  elif (( rgb[r] == 0 )) && (( rgb[g] == 255 )) && (( rgb[b] < 255 )); then
     # yellow -> aqua
-    rgb10[b]=$((rgb10[b] + increment))
-    rgb10[b]=$((rgb10[b] < 255 ? rgb10[b] : 255))
-  elif (( rgb10[r] == 0 )) && (( rgb10[g] > 0 )) && (( rgb10[b] == 255 )); then
+    rgb[b]=$((rgb[b] + increment))
+    rgb[b]=$((rgb[b] < 255 ? rgb[b] : 255))
+  elif (( rgb[r] == 0 )) && (( rgb[g] > 0 )) && (( rgb[b] == 255 )); then
     # aqua -> blue
-    rgb10[g]=$((rgb10[g] - increment))
-    rgb10[g]=$((rgb10[g] < 0 ? 0 : rgb10[g]))
-  elif (( rgb10[r] < 255 )) && (( rgb10[g] == 0 )) && (( rgb10[b] == 255 )); then
+    rgb[g]=$((rgb[g] - increment))
+    rgb[g]=$((rgb[g] < 0 ? 0 : rgb[g]))
+  elif (( rgb[r] < 255 )) && (( rgb[g] == 0 )) && (( rgb[b] == 255 )); then
     # blue -> purple
-    rgb10[r]=$((rgb10[r] + increment))
-    rgb10[r]=$((rgb10[r] < 255 ? rgb10[r] : 255))
-  elif (( rgb10[r] == 255 )) && (( rgb10[g] == 0 )) && (( rgb10[b] > 0 )); then
+    rgb[r]=$((rgb[r] + increment))
+    rgb[r]=$((rgb[r] < 255 ? rgb[r] : 255))
+  elif (( rgb[r] == 255 )) && (( rgb[g] == 0 )) && (( rgb[b] > 0 )); then
     # purple -> red
-    rgb10[b]=$((rgb10[b] - increment))
-    rgb10[b]=$((rgb10[b] < 0 ? 0 : rgb10[b]))
+    rgb[b]=$((rgb[b] - increment))
+    rgb[b]=$((rgb[b] < 0 ? 0 : rgb[b]))
   fi
 
-  for key in ${(k)rgb16}; do
-    local hex=$(echo "obase=16; ibase=10; $rgb10[$key]" | bc) # 10 -> A
-    hex=0$hex # A -> 0A, FF -> 0FF
-    hex=${hex: -2} # 0FF -> FF
-    rgb16[$key]=$hex
+  for key in ${(k)rgb}; do
+    printf -v "rgb[$key]" "%02x" $rgb[$key]
   done
-  prompt_chameleon_color='#'${rgb16[r]}${rgb16[g]}${rgb16[b]}
+  prompt_chameleon_color='#'${rgb[r]}${rgb[g]}${rgb[b]}
 }
 
 prompt_chameleon_refresh() {
